@@ -17,6 +17,6 @@ Demosaic.bilinear({height:100, width:100, data: buf});
  - Support more Bayer CFAs.
  - Some more demosaic algorithms.
 
-## Licence
+## License
 
 MIT
