@@ -2,16 +2,34 @@
   "name": "demosaic",
   "version": "0.0.1",
   "description": "Bilinear demosaic of raw images.",
+  "keywords": [
+    "demosaic",
+    "raw",
+    "bayer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BryceCicada/demosaic.git"
+  },
+  "homepage": "https://github.com/BryceCicada/demosaic",
+  "bugs": {
+    "url": "https://github.com/BryceCicada/demosaic/issues"
+  },
   "main": "src/Demosaic.js",
   "scripts": {
-    "test": " ./node_modules/.bin/mocha"
+    "test": "grunt jshint && jenkins-mocha --cobertura test/*"
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "chai": "^4.0.2",
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "jenkins-mocha": "^2.6.0",
+    "jshint-jenkins-checkstyle-reporter": "^0.1.2",
+    "jshint-stylish": "^2.2.1",
     "lodash.range": "^3.2.0",
     "mocha": "^3.4.2"
   }
