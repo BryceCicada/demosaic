@@ -1,0 +1,19 @@
+{
+  "name": "demosaic",
+  "version": "1.0.0",
+  "description": "Bilinear demosaic of raw images.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "mathjs": "^3.13.3"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "lodash.range": "^3.2.0",
+    "mocha": "^3.4.2"
+  }
+}
