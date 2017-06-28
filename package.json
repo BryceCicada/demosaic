@@ -1,6 +1,6 @@
 {
   "name": "demosaic",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Bilinear demosaic of raw images.",
   "keywords": [
     "demosaic",
@@ -21,9 +21,12 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "lodash.defaults": "^4.2.0"
+  },
   "devDependencies": {
     "chai": "^4.0.2",
+    "flatmap": "0.0.3",
     "grunt": "^1.0.1",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-jshint": "^1.1.0",

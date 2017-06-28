@@ -1,5 +1,10 @@
-function bilinear(img, bayer) {
-    let result = Buffer.alloc(img.height * img.width * 3);
+let defaults = require('lodash.defaults');
+
+function bilinear(img, options={}) {
+
+    defaults(options, {depth: 8});
+
+    let result = Buffer.alloc(img.height * img.width * 3 * (options.depth/8));
 
     let reflect = (x, p1, p2) => {
         if (x >= p1 && x <= p2) {
@@ -16,7 +21,21 @@ function bilinear(img, bayer) {
     let p = (i, j) => {
         let x = reflect(i, 0, img.height - 1);
         let y = reflect(j, 0, img.width - 1);
-        return img.data[x * img.width + y];
+        return read(x * img.width + y);
+    };
+
+    let read = i => {
+      switch (options.depth) {
+          case 16: return img.data.readUInt16BE(i*2);
+          default: return img.data.readUInt8(i);
+      }
+    };
+
+    let write = (x,i) => {
+        switch (options.depth) {
+            case 16: result.writeUInt16BE(x,i*2); break;
+            default: result.writeUInt8(x,i); break;
+        }
     };
 
     let red = (i, j) => {
@@ -40,9 +59,9 @@ function bilinear(img, bayer) {
 
     for (let i = 0; i < img.height; i++) {
         for (let j = 0; j < img.width; j++) {
-            result[i * img.width * 3 + j * 3] = red(i, j);
-            result[i * img.width * 3 + j * 3 + 1] = green(i, j);
-            result[i * img.width * 3 + j * 3 + 2] = blue(i, j);
+            write(red(i,j), i * img.width * 3 + j * 3);
+            write(green(i,j), i * img.width * 3 + j * 3 + 1);
+            write(blue(i,j), i * img.width * 3 + j * 3 + 2);
         }
     }
 
