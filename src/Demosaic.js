@@ -1,22 +1,29 @@
 let defaults = require('lodash.defaults');
 
+let reflect = (x, p1, p2) => {
+    if (x >= p1 && x <= p2) {
+        return x;
+    }
+    if (x < p1) {
+        return p1 + Math.abs(p1 - x);
+    }
+    if (x > p2) {
+        return p2 - Math.abs(p2 - x);
+    }
+};
+
+let Bayer = {
+    RGGB: 1,
+    GRBG: 2,
+    GBRG: 3,
+    BGGR: 4
+};
+
 function bilinear(img, options={}) {
 
     defaults(options, {depth: 8});
 
     let result = Buffer.alloc(img.height * img.width * 3 * (options.depth/8));
-
-    let reflect = (x, p1, p2) => {
-        if (x >= p1 && x <= p2) {
-            return x;
-        }
-        if (x < p1) {
-            return p1 + Math.abs(p1 - x);
-        }
-        if (x > p2) {
-            return p2 - Math.abs(p2 - x);
-        }
-    };
 
     let p = (i, j) => {
         let x = reflect(i, 0, img.height - 1);
@@ -67,13 +74,6 @@ function bilinear(img, options={}) {
 
     return result;
 }
-
-let Bayer = {
-    RGGB: 1,
-    GRBG: 2,
-    GBRG: 3,
-    BGGR: 4
-};
 
 module.exports = {
     Bayer: Bayer,
