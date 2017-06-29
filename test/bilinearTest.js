@@ -17,6 +17,7 @@ describe('Bilinear', () => {
     let green = (x, d = 1) => x.filter((p, i) => range(0, d).map(x => x + d).includes(i % (3 * d)));
     let blue = (x, d = 1) => x.filter((p, i) => range(0, d).map(x => x + 2 * d).includes(i % (3 * d)));
 
+    // Create a mosaiced image to use in tests.  Here, bayer CFA is RGGB.
     let mosaic = (rgb, w, h) => {
         let mosaiced = Buffer.alloc(w * h);
         for (let i = 0; i < h; i++) {
@@ -67,6 +68,24 @@ describe('Bilinear', () => {
         red(rgb).should.eql(Buffer.from([1, 1, 1, 1]));
     });
 
+    it('should interpolate red over 2x2 image with GRBG bayer CFA', () => {
+        let raw = Buffer.from(range(1, 5));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, bayer: Demosaic.Bayer.GRBG});
+        red(rgb).should.eql(Buffer.from([2, 2, 2, 2]));
+    });
+
+    it('should interpolate red over 2x2 image with GBRG bayer CFA', () => {
+        let raw = Buffer.from(range(1, 5));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, bayer: Demosaic.Bayer.GBRG});
+        red(rgb).should.eql(Buffer.from([3, 3, 3, 3]));
+    });
+
+    it('should interpolate red over 2x2 image with BGGR bayer CFA', () => {
+        let raw = Buffer.from(range(1, 5));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, bayer: Demosaic.Bayer.BGGR});
+        red(rgb).should.eql(Buffer.from([4, 4, 4, 4]));
+    });
+
     it('should interpolate red over 2x2 16-bit image with RGGB bayer CFA', () => {
         let raw = Buffer.from(flatmap(range(1, 5), x => [2, x]));
         let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, depth: 16});
@@ -76,6 +95,27 @@ describe('Bilinear', () => {
     it('should interpolate green over 2x2 image with RGGB bayer CFA', () => {
         let raw = Buffer.from(range(1, 5));
         let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw});
+
+        green(rgb).should.eql(Buffer.from([3, 2, 3, 3]));
+    });
+
+    it('should interpolate green over 2x2 image with GRBG bayer CFA', () => {
+        let raw = Buffer.from(range(1, 5));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, bayer: Demosaic.Bayer.GRBG});
+
+        green(rgb).should.eql(Buffer.from([1, 3, 3, 4]));
+    });
+
+    it('should interpolate green over 2x2 image with GBRG bayer CFA', () => {
+        let raw = Buffer.from(range(1, 5));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, bayer: Demosaic.Bayer.GBRG});
+
+        green(rgb).should.eql(Buffer.from([1, 3, 3, 4]));
+    });
+
+    it('should interpolate green over 2x2 image with BGGR bayer CFA', () => {
+        let raw = Buffer.from(range(1, 5));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, bayer: Demosaic.Bayer.BGGR});
 
         green(rgb).should.eql(Buffer.from([3, 2, 3, 3]));
     });
@@ -98,6 +138,24 @@ describe('Bilinear', () => {
         let raw = Buffer.from(range(1, 5));
         let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw});
         blue(rgb).should.eql(Buffer.from([4, 4, 4, 4]));
+    });
+
+    it('should interpolate blue over 2x2 image with GRBG bayer CFA', () => {
+        let raw = Buffer.from(range(1, 5));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, bayer: Demosaic.Bayer.GRBG});
+        blue(rgb).should.eql(Buffer.from([3, 3, 3, 3]));
+    });
+
+    it('should interpolate blue over 2x2 image with GBRG bayer CFA', () => {
+        let raw = Buffer.from(range(1, 5));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, bayer: Demosaic.Bayer.GBRG});
+        blue(rgb).should.eql(Buffer.from([2, 2, 2, 2]));
+    });
+
+    it('should interpolate blue over 2x2 image with BGGR bayer CFA', () => {
+        let raw = Buffer.from(range(1, 5));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, bayer: Demosaic.Bayer.BGGR});
+        blue(rgb).should.eql(Buffer.from([1, 1, 1, 1]));
     });
 
     it('should interpolate red over 4x4 image with RGGB bayer CFA', () => {
