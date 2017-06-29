@@ -1,6 +1,6 @@
 {
   "name": "demosaic",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Bilinear demosaic of raw images.",
   "keywords": [
     "demosaic",
@@ -19,11 +19,10 @@
   "scripts": {
     "test": "grunt jshint && jenkins-mocha --cobertura test/*"
   },
-  "author": "",
+  "author": "Christopher Nix",
   "license": "MIT",
   "dependencies": {
-    "euclidean-distance": "^1.0.0",
-    "lodash.defaults": "^4.2.0"
+    "lodash.merge": "^4.6.0"
   },
   "devDependencies": {
     "chai": "^4.0.2",
@@ -34,10 +33,9 @@
     "jenkins-mocha": "^2.6.0",
     "jshint-jenkins-checkstyle-reporter": "^0.1.2",
     "jshint-stylish": "^2.2.1",
-    "lodash.merge": "^4.6.0",
     "lodash.range": "^3.2.0",
     "mocha": "^3.4.2",
     "sharp": "^0.18.1",
-    "vectorious": "^4.8.1"
+    "euclidean-distance": "^1.0.0"
   }
 }

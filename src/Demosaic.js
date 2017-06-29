@@ -1,4 +1,4 @@
-let defaults = require('lodash.defaults');
+let merge = require('lodash.merge');
 
 let reflect = (x, p1, p2) => {
     if (x >= p1 && x <= p2) {
@@ -21,7 +21,7 @@ let Bayer = {
 
 function bilinear(img, options={}) {
 
-    defaults(options, {depth: 8});
+    options = merge({depth: 8}, options);
 
     let result = Buffer.alloc(img.height * img.width * 3 * (options.depth/8));
 

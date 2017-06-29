@@ -1,7 +1,6 @@
 let flatmap = require('flatmap');
 let distance = require('euclidean-distance');
 let sharp = require('sharp');
-let fs = require('fs');
 let range = require('lodash.range');
 let merge = require('lodash.merge');
 let chai = require('chai');
@@ -22,9 +21,13 @@ describe('Bilinear', () => {
         let mosaiced = Buffer.alloc(w * h);
         for (let i = 0; i < h; i++) {
             for (let j = 0; j < w; j++) {
-                if (i % 2 !== j % 2) mosaiced[i * w + j] = rgb[i * w * 3 + j * 3 + 1];  // green
-                else if (i % 2 === 0) mosaiced[i * w + j] = rgb[i * w * 3 + j * 3];  // red
-                else if (i % 2 === 1) mosaiced[i * w + j] = rgb[i * w * 3 + j * 3 + 2];  // blue
+                if (i % 2 !== j % 2) { // green
+                    mosaiced[i * w + j] = rgb[i * w * 3 + j * 3 + 1];
+                } else if (i % 2 === 0) { // red
+                    mosaiced[i * w + j] = rgb[i * w * 3 + j * 3];
+                } else if (i % 2 === 1) { // blue
+                    mosaiced[i * w + j] = rgb[i * w * 3 + j * 3 + 2];
+                }
             }
         }
         return mosaiced;
@@ -146,9 +149,9 @@ describe('Bilinear', () => {
                 return sharp(rgbOut, {raw: {width: info.width, height: info.height, channels: 3}})
                     .jpeg()
                     .toFile(`test/artifacts/${imageName.replace('.jpg', '.bilinear.jpg')}`)
-                    .then(info => ({rgbIn, rgbOut, info}))
+                    .then(() => ({rgbIn, rgbOut}));
             })
-            .then(({rgbIn, rgbOut, info}) => {
+            .then(({rgbIn, rgbOut}) => {
                 let rgbInArr = [...rgbIn.values()];
                 let rgbOutArr = [...rgbOut.values()];
                 let rgbInSum = rgbInArr.reduce((a, b) => a + b, 0);
@@ -161,11 +164,11 @@ describe('Bilinear', () => {
 
     it('should demosaic nature-forest-industry-rails.jpg correctly', () => {
         return testOnSampleImage('nature-forest-industry-rails.jpg', 0.002);
-    })
+    });
 
     it('should demosaic heart.jpg correctly', () => {
         return testOnSampleImage('heart.jpg', 0.00032);
-    })
+    });
 
 });
 
