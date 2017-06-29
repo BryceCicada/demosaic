@@ -1,7 +1,7 @@
 {
   "name": "demosaic",
-  "version": "0.0.3",
-  "description": "Bilinear demosaic of raw images.",
+  "version": "0.0.4",
+  "description": "Bayer demosaic of raw images.",
   "keywords": [
     "demosaic",
     "raw",
