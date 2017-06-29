@@ -25,23 +25,30 @@ The option _bayer_ desribes the orientation of the 4 pixels in the top left corn
 
 ##### Bayer.RGGB
 
- | R | G |
- | G | B |
+ | __R__ | __G__ |
+ |-------|-------|
+ | __G__ | __B__ |
 
 ##### Bayer.GRBG
 
- | G | R |
- | B | G |
+ | __G__ | __R__ |
+ |-------|-------|
+ | __B__ | __G__ |
+
 
 ##### Bayer.GBRG
 
- | G | B |
- | R | G |
+ | __G__ | __B__ |
+ |-------|-------|
+ | __R__ | __G__ |
+
 
 ##### Bayer.BGGR
 
- | B | G |
- | G | R |
+ | __B__ | __G__ |
+ |-------|-------|
+ | __G__ | __R__ |
+
 
 ### Examples
 
