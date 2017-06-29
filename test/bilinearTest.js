@@ -69,7 +69,7 @@ describe('Bilinear', () => {
 
     it('should interpolate red over 2x2 16-bit image with RGGB bayer CFA', () => {
         let raw = Buffer.from(flatmap(range(1, 5), x => [2, x]));
-        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw}, {depth: 16});
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, depth: 16});
         red(rgb, 2).should.eql(Buffer.from([2, 1, 2, 1, 2, 1, 2, 1]));
     });
 
@@ -82,9 +82,16 @@ describe('Bilinear', () => {
 
     it('should interpolate green over 2x2 16-bit image with RGGB bayer CFA', () => {
         let raw = Buffer.from(flatmap(range(1, 5), x => [3, x]));
-        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw}, {depth: 16});
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, depth: 16});
 
         green(rgb, 2).should.eql(Buffer.from([3, 3, 3, 2, 3, 3, 3, 3]));
+    });
+
+    it('should interpolate green over 2x2 16-bit little-endian image with RGGB bayer CFA', () => {
+        let raw = Buffer.from(flatmap(range(1, 5), x => [x, 3]));
+        let rgb = Demosaic.bilinear({width: 2, height: 2, data: raw, depth: 16, endianness: 'little'});
+
+        green(rgb, 2).should.eql(Buffer.from([3, 3, 2, 3, 3, 3, 3, 3]));
     });
 
     it('should interpolate blue over 2x2 image with RGGB bayer CFA', () => {

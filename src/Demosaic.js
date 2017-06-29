@@ -19,28 +19,39 @@ let Bayer = {
     BGGR: 4
 };
 
-function bilinear(img, options={}) {
+function bilinear(options) {
 
-    options = merge({depth: 8}, options);
+    options = merge({depth: 8, endianness: 'big'}, options);
 
-    let result = Buffer.alloc(img.height * img.width * 3 * (options.depth/8));
+    let result = Buffer.alloc(options.height * options.width * 3 * (options.depth/8));
 
     let p = (i, j) => {
-        let x = reflect(i, 0, img.height - 1);
-        let y = reflect(j, 0, img.width - 1);
-        return read(x * img.width + y);
+        let x = reflect(i, 0, options.height - 1);
+        let y = reflect(j, 0, options.width - 1);
+        return read(x * options.width + y);
     };
 
     let read = i => {
       switch (options.depth) {
-          case 16: return img.data.readUInt16BE(i*2);
-          default: return img.data.readUInt8(i);
+          case 16:
+              if (options.endianness==='little') {
+                  return options.data.readUInt16LE(i*2)
+              } else {
+                  return options.data.readUInt16BE(i*2);
+              }
+          default: return options.data.readUInt8(i);
       }
     };
 
     let write = (x,i) => {
         switch (options.depth) {
-            case 16: result.writeUInt16BE(x,i*2); break;
+            case 16:
+                if (options.endianness==='little') {
+                    result.writeUInt16LE(x,i*2);
+                } else {
+                    result.writeUInt16BE(x,i*2);
+                }
+                break;
             default: result.writeUInt8(x,i); break;
         }
     };
@@ -64,11 +75,11 @@ function bilinear(img, options={}) {
         return p(i, j);
     };
 
-    for (let i = 0; i < img.height; i++) {
-        for (let j = 0; j < img.width; j++) {
-            write(red(i,j), i * img.width * 3 + j * 3);
-            write(green(i,j), i * img.width * 3 + j * 3 + 1);
-            write(blue(i,j), i * img.width * 3 + j * 3 + 2);
+    for (let i = 0; i < options.height; i++) {
+        for (let j = 0; j < options.width; j++) {
+            write(red(i,j), i * options.width * 3 + j * 3);
+            write(green(i,j), i * options.width * 3 + j * 3 + 1);
+            write(blue(i,j), i * options.width * 3 + j * 3 + 2);
         }
     }
 
