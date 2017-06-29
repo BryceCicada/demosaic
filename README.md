@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/BryceCicada/demosaic.svg?branch=master)](https://travis-ci.org/BryceCicada/demosaic)
+
 # demosaic
 Demosaic raw images with NodeJS.
 
