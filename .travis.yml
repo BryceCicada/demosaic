@@ -3,3 +3,8 @@ node_js:
   - "node"
   - "7"
   - "6"
+addons:
+  apt:
+    packages:
+    - gcc-4.8
+    - g++-4.8
