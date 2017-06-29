@@ -6,5 +6,5 @@ node_js:
 addons:
   apt:
     packages:
-    - gcc-4.6.3
-    - g++-4.6.3
+    - gcc
+    - g++
