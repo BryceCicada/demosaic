@@ -3,8 +3,5 @@ node_js:
   - "node"
   - "7"
   - "6"
-addons:
-  apt:
-    packages:
-    - gcc
-    - g++
+dist: trusty
+sudo: false
