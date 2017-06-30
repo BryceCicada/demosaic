@@ -11,7 +11,7 @@ This code is not intended to support proprietary raw image formats from camera m
 ## Usage
 ```Demosaic.bilinear(args)```
 
-Where args is:
+Where args is an object with the following elements:
   - __data__.  Buffer. Raw pixel data. Required.
   - __width__.  Number. Width of image. Required.
   - __height__.  Number. Height of image. Required.
