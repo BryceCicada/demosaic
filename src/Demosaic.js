@@ -50,10 +50,10 @@ let bayerMask = bayer => {
               isBlue:   (i,j) => i % 2 === 0 && j % 2 === 0
           };
 
-  }
+    }
 };
 
-let read = (i,o) => {
+let read = (i, o) => {
     switch (o.depth) {
         case 16:
             if (o.endianness === 'little') {
@@ -113,15 +113,20 @@ function bilinear(options) {
 
     options = merge({depth: 8, endianness: 'big', bayer: Bayer.RGGB}, options);
 
-    let result = Buffer.alloc(options.height * options.width * 3 * (options.depth / 8));
+    let h = options.height;
+    let w = options.width;
+
+    let result = Buffer.alloc(h * w * 3 * (options.depth / 8));
 
     let bayer = bayerMask(options.bayer);
 
-    for (let i = 0; i < options.height; i++) {
-        for (let j = 0; j < options.width; j++) {
-            write(red(i, j, bayer, options), i * options.width * 3 + j * 3, options, result);
-            write(green(i, j, bayer, options), i * options.width * 3 + j * 3 + 1, options, result);
-            write(blue(i, j, bayer, options), i * options.width * 3 + j * 3 + 2, options, result);
+    for (let i = 0; i < h; i++) {
+        let l = i * w * 3;
+        for (let j = 0; j < w; j++) {
+            let k = l + j * 3;
+            write(red(i, j, bayer, options), k, options, result);
+            write(green(i, j, bayer, options), k + 1, options, result);
+            write(blue(i, j, bayer, options), k + 2, options, result);
         }
     }
 
