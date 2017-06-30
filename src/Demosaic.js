@@ -1,15 +1,15 @@
 let merge = require('lodash.merge');
 
 let reflect = (x, p1, p2) => {
+    let r;
     if (x >= p1 && x <= p2) {
-        return x;
+        r = x;
+    } else if (x < p1) {
+        r = p1 + Math.abs(p1 - x);
+    } else {
+        r = p2 - Math.abs(p2 - x);
     }
-    if (x < p1) {
-        return p1 + Math.abs(p1 - x);
-    }
-    if (x > p2) {
-        return p2 - Math.abs(p2 - x);
-    }
+    return r;
 };
 
 let Bayer = {
