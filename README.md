@@ -1,5 +1,6 @@
 # demosaic
 
+[![Version npm](https://img.shields.io/npm/v/demosaic.svg)](https://www.npmjs.com/package/demosaic)
 [![Build Status](https://travis-ci.org/BryceCicada/demosaic.svg?branch=master)](https://travis-ci.org/BryceCicada/demosaic)
 [![Coverage Status](https://coveralls.io/repos/github/BryceCicada/demosaic/badge.svg?branch=master)](https://coveralls.io/github/BryceCicada/demosaic?branch=master)
 
