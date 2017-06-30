@@ -5,6 +5,7 @@ let range = require('lodash.range');
 let merge = require('lodash.merge');
 let chai = require('chai');
 let Demosaic = require('../src/Demosaic');
+let mosaic = require('./util/mosaic');
 
 chai.should();
 
@@ -16,23 +17,6 @@ describe('Bilinear', () => {
     let red = (x, d = 1) => x.filter((p, i) => range(0, d).includes(i % (3 * d)));
     let green = (x, d = 1) => x.filter((p, i) => range(0, d).map(x => x + d).includes(i % (3 * d)));
     let blue = (x, d = 1) => x.filter((p, i) => range(0, d).map(x => x + 2 * d).includes(i % (3 * d)));
-
-    // Create a mosaiced image to use in tests.  Here, bayer CFA is RGGB.
-    let mosaic = (rgb, w, h) => {
-        let mosaiced = Buffer.alloc(w * h);
-        for (let i = 0; i < h; i++) {
-            for (let j = 0; j < w; j++) {
-                if (i % 2 !== j % 2) { // green
-                    mosaiced[i * w + j] = rgb[i * w * 3 + j * 3 + 1];
-                } else if (i % 2 === 0) { // red
-                    mosaiced[i * w + j] = rgb[i * w * 3 + j * 3];
-                } else if (i % 2 === 1) { // blue
-                    mosaiced[i * w + j] = rgb[i * w * 3 + j * 3 + 2];
-                }
-            }
-        }
-        return mosaiced;
-    };
 
     it('should exist', () => {
         Demosaic.bilinear({width: 0, height: 0, data: Buffer.from([])});
