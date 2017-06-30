@@ -30,24 +30,24 @@ let bayerMask = bayer => {
           };
       case Bayer.GRBG:
           return {
-              isRed:    (i,j) => i % 2 === 0 && j % 2 === 0,
-              isGreenR: (i,j) => i % 2 === 0 && j % 2 === 1,
-              isGreenB: (i,j) => i % 2 === 1 && j % 2 === 0,
-              isBlue:   (i,j) => i % 2 === 1 && j % 2 === 1
+              isRed:    (i,j) => i % 2 === 0 && j % 2 === 1,
+              isGreenR: (i,j) => i % 2 === 0 && j % 2 === 0,
+              isGreenB: (i,j) => i % 2 === 1 && j % 2 === 1,
+              isBlue:   (i,j) => i % 2 === 1 && j % 2 === 0
           };
       case Bayer.GBRG:
           return {
-              isRed:    (i,j) => i % 2 === 0 && j % 2 === 0,
-              isGreenR: (i,j) => i % 2 === 0 && j % 2 === 1,
-              isGreenB: (i,j) => i % 2 === 1 && j % 2 === 0,
-              isBlue:   (i,j) => i % 2 === 1 && j % 2 === 1
+              isRed:    (i,j) => i % 2 === 1 && j % 2 === 0,
+              isGreenR: (i,j) => i % 2 === 1 && j % 2 === 1,
+              isGreenB: (i,j) => i % 2 === 0 && j % 2 === 0,
+              isBlue:   (i,j) => i % 2 === 0 && j % 2 === 1
           };
       case Bayer.BGGR:
           return {
-              isRed:    (i,j) => i % 2 === 0 && j % 2 === 0,
-              isGreenR: (i,j) => i % 2 === 0 && j % 2 === 1,
-              isGreenB: (i,j) => i % 2 === 1 && j % 2 === 0,
-              isBlue:   (i,j) => i % 2 === 1 && j % 2 === 1
+              isRed:    (i,j) => i % 2 === 1 && j % 2 === 1,
+              isGreenR: (i,j) => i % 2 === 1 && j % 2 === 0,
+              isGreenB: (i,j) => i % 2 === 0 && j % 2 === 1,
+              isBlue:   (i,j) => i % 2 === 0 && j % 2 === 0
           };
 
   }
