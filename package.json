@@ -43,6 +43,8 @@
     "jshint-stylish": "^2.2.1",
     "lodash.defaults": "^4.2.0",
     "lodash.range": "^3.2.0",
+    "lodash.sum": "^4.0.2",
+    "lodash.zip": "^4.2.0",
     "lodash.zipwith": "^4.2.0",
     "mocha": "^3.4.2",
     "sharp": "^0.18.1"

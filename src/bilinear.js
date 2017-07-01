@@ -1,4 +1,5 @@
 let merge = require('lodash.merge');
+let Bayer = require('./Bayer');
 
 let reflect = (x, p1, p2) => {
     let r;
@@ -10,13 +11,6 @@ let reflect = (x, p1, p2) => {
         r = p2 - Math.abs(p2 - x);
     }
     return r;
-};
-
-let Bayer = {
-    RGGB: 'rggb',
-    GRBG: 'grbg',
-    GBRG: 'gbrg',
-    BGGR: 'bggr'
 };
 
 let read = (i, o) => {
@@ -151,7 +145,4 @@ function bilinear(options) {
     return result;
 }
 
-module.exports = {
-    Bayer: Bayer,
-    bilinear: bilinear
-};
+module.exports = bilinear;

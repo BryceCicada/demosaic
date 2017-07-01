@@ -1,7 +1,7 @@
 let flatmap = require('flatmap');
 let range = require('lodash.range');
 let chai = require('chai');
-let Demosaic = require('../../src/Demosaic');
+let Demosaic = require('../../Demosaic');
 
 chai.should();
 

@@ -1,6 +1,6 @@
 let Benchmark = require('benchmark');
 let sharp = require('sharp');
-let Demosaic = require('../../src/Demosaic');
+let Demosaic = require('../../Demosaic');
 let mosaic = require('../util/mosaic');
 
 

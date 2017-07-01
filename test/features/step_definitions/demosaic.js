@@ -1,8 +1,11 @@
 let sharp = require('sharp');
 let defaults = require('lodash.defaults');
+let range = require('lodash.range');
 let zipWith = require('lodash.zipwith');
+let zip = require('lodash.zip');
+let sum = require('lodash.sum');
 let mosaic = require('../../util/mosaic');
-let Demosaic = require('../../../src/Demosaic');
+let Demosaic = require('../../../Demosaic');
 let chai = require('chai');
 let {defineSupportCode} = require('cucumber');
 
@@ -50,7 +53,7 @@ defineSupportCode(function (context) {
             .toFile(`test/artifacts/${imageName}`);
     });
 
-    Then(/^the demosaiced pixels and original RGB pixels should have mean-squared-error under (\d+)$/, function (mseUpperBound) {
+    Then(/^the original and demosaiced pixels should have mean-squared-error under (\d+)$/, function (mseUpperBound) {
         // Some pre-requisites for the calculation of mean-squared-error.
         this.rgb.width.should.equal(this.demosaic.width);
         this.rgb.height.should.equal(this.demosaic.height);
@@ -59,10 +62,47 @@ defineSupportCode(function (context) {
 
         let rgb = [...this.rgb.pixels.values()];
         let demosaic = [...this.demosaic.pixels.values()];
-        let mse = zipWith(rgb, demosaic, (a, b) => (a - b) * (a - b))
-                .reduce((acc, x) => acc + x, 0) / (rgb.length);
-        mse.should.below(mseUpperBound);
+        meanSquaredError(rgb, demosaic).should.be.below(mseUpperBound);
     });
 
+    Then(/^the original and demosaiced colour histograms should have mean-squared-error under (\d+)$/, function (mseUpperBound) {
+        this.rgb.pixels.length.should.equal(this.rgb.width * this.rgb.height * 3);
+        this.demosaic.pixels.length.should.equal(this.demosaic.width * this.demosaic.height * 3);
 
+        let rgbHistograms = range(3).map(x => new RGBHistogram(this.rgb, x).toArray());
+        let demosaicHistograms = range(3).map(x => new RGBHistogram(this.demosaic, x).toArray());
+
+        let mse = sum(zip(rgbHistograms, demosaicHistograms).map(([h1, h2]) => meanSquaredError(h1, h2)));
+        mse.should.be.below(mseUpperBound);
+    });
+
+    function meanSquaredError(xs, ys) {
+        let squareSum = sum(zipWith(xs, ys, (x, y) => (x - y) * (x - y)));
+        return squareSum / Math.min(xs.length, ys.length);
+    }
+
+    class RGBHistogram extends Map {
+        constructor(img, channel) {
+            super();
+            for (let i = 0; i < 256; i++) {
+                this.set(i, 0);
+            }
+
+            for (let i = 0; i < img.height; i++) {
+                for (let j = 0; j < img.width; j++) {
+                    this.increment(img.pixels[i * img.width * 3 + j * 3 + channel]);
+                }
+            }
+        }
+
+        increment(index) {
+            this.set(index, this.get(index) + 1);
+        }
+
+        toArray() {
+            return [...this.entries()]
+                .sort(([key1], [key2]) => key1 - key2)
+                .map(([key, value]) => value);
+        }
+    }
 });
