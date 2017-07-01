@@ -1,11 +1,7 @@
 let flatmap = require('flatmap');
-let distance = require('euclidean-distance');
-let sharp = require('sharp');
 let range = require('lodash.range');
-let merge = require('lodash.merge');
 let chai = require('chai');
-let Demosaic = require('../src/Demosaic');
-let mosaic = require('./util/mosaic');
+let Demosaic = require('../../src/Demosaic');
 
 chai.should();
 
@@ -179,45 +175,5 @@ describe('Bilinear', () => {
         let rgb = Demosaic.bilinear({width: 3, height: 3, data: raw});
         blue(rgb).should.eql(Buffer.from([5, 5, 5, 5, 5, 5, 5, 5, 5]));
     });
-
-    function testOnSampleImage(imageName, threshold) {
-        let image = sharp(`test/resources/${imageName}`);
-        return image
-            .metadata()
-            .then(metadata => image.raw().toBuffer().then(buf => merge({data: buf}, metadata)))
-            .then(rgb => {
-                let rgbIn = rgb.data;
-                let mosaiced = mosaic(rgb.data, rgb.width, rgb.height);
-                return sharp(mosaiced, {raw: {width: rgb.width, height: rgb.height, channels: 1}})
-                    .jpeg()
-                    .toFile(`test/artifacts/${imageName.replace('.jpg', '.raw.jpg')}`)
-                    .then(info => ({rgbIn, mosaiced, info}));
-            })
-            .then(({rgbIn, mosaiced, info}) => {
-                let rgbOut = Demosaic.bilinear({width: info.width, height: info.height, data: mosaiced});
-                return sharp(rgbOut, {raw: {width: info.width, height: info.height, channels: 3}})
-                    .jpeg()
-                    .toFile(`test/artifacts/${imageName.replace('.jpg', '.bilinear.jpg')}`)
-                    .then(() => ({rgbIn, rgbOut}));
-            })
-            .then(({rgbIn, rgbOut}) => {
-                let rgbInArr = [...rgbIn.values()];
-                let rgbOutArr = [...rgbOut.values()];
-                let rgbInSum = rgbInArr.reduce((a, b) => a + b, 0);
-                let rgbOutSum = rgbOutArr.reduce((a, b) => a + b, 0);
-                rgbInArr = rgbInArr.map(x => x / rgbInSum);
-                rgbOutArr = rgbOutArr.map(x => x / rgbOutSum);
-                distance(rgbInArr, rgbOutArr).should.be.below(threshold);
-            });
-    }
-
-    it('should demosaic nature-forest-industry-rails.jpg correctly', () => {
-        return testOnSampleImage('nature-forest-industry-rails.jpg', 0.002);
-    });
-
-    it('should demosaic heart.jpg correctly', () => {
-        return testOnSampleImage('heart.jpg', 0.00032);
-    });
-
 });
 

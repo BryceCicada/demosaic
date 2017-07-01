@@ -17,10 +17,10 @@
   },
   "main": "src/Demosaic.js",
   "scripts": {
-    "coverage": "node node_modules/.bin/istanbul cover _mocha -- -R spec",
+    "coverage": "istanbul cover _mocha -- -R spec test/unit",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
-    "test": "grunt jshint && jenkins-mocha --cobertura test/*",
-    "benchmark": "node benchmark/benchmark.js"
+    "test": "grunt jshint && jenkins-mocha --cobertura test/unit/* && cucumberjs test",
+    "benchmark": "node test/benchmark/benchmark.js"
   },
   "author": "Christopher Nix",
   "license": "MIT",
@@ -31,6 +31,7 @@
     "benchmark": "^2.1.4",
     "chai": "^4.0.2",
     "coveralls": "^2.13.1",
+    "cucumber": "^2.3.1",
     "euclidean-distance": "^1.0.0",
     "flatmap": "0.0.3",
     "grunt": "^1.0.1",
@@ -40,7 +41,9 @@
     "jenkins-mocha": "^2.6.0",
     "jshint-jenkins-checkstyle-reporter": "^0.1.2",
     "jshint-stylish": "^2.2.1",
+    "lodash.defaults": "^4.2.0",
     "lodash.range": "^3.2.0",
+    "lodash.zipwith": "^4.2.0",
     "mocha": "^3.4.2",
     "sharp": "^0.18.1"
   }

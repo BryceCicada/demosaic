@@ -1,3 +1,5 @@
+'use strict';
+
 // Create a mosaiced image to use in tests.  Here, bayer CFA is RGGB.
 let mosaic = (rgb, w, h) => {
     let mosaiced = Buffer.alloc(w * h);
