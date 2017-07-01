@@ -114,7 +114,7 @@ let red = (i, j, b, o) => {
 };
 
 let green = (i, j, b, o) => {
-    if (isRed(i, j, b) || isBlue(i, j))
+    if (isRed(i, j, b) || isBlue(i, j, b))
         return Math.round((p(i, j - 1, o) + p(i, j + 1, o) + p(i - 1, j, o) + p(i + 1, j, o)) / 4);
     return p(i, j, o);
 };
