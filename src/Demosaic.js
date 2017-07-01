@@ -19,40 +19,6 @@ let Bayer = {
     BGGR: 'bggr'
 };
 
-let bayerMask = bayer => {
-  switch (bayer) {
-      case Bayer.RGGB:
-          return {
-              isRed:    (i,j) => i % 2 === 0 && j % 2 === 0,
-              isGreenR: (i,j) => i % 2 === 0 && j % 2 === 1,
-              isGreenB: (i,j) => i % 2 === 1 && j % 2 === 0,
-              isBlue:   (i,j) => i % 2 === 1 && j % 2 === 1
-          };
-      case Bayer.GRBG:
-          return {
-              isRed:    (i,j) => i % 2 === 0 && j % 2 === 1,
-              isGreenR: (i,j) => i % 2 === 0 && j % 2 === 0,
-              isGreenB: (i,j) => i % 2 === 1 && j % 2 === 1,
-              isBlue:   (i,j) => i % 2 === 1 && j % 2 === 0
-          };
-      case Bayer.GBRG:
-          return {
-              isRed:    (i,j) => i % 2 === 1 && j % 2 === 0,
-              isGreenR: (i,j) => i % 2 === 1 && j % 2 === 1,
-              isGreenB: (i,j) => i % 2 === 0 && j % 2 === 0,
-              isBlue:   (i,j) => i % 2 === 0 && j % 2 === 1
-          };
-      case Bayer.BGGR:
-          return {
-              isRed:    (i,j) => i % 2 === 1 && j % 2 === 1,
-              isGreenR: (i,j) => i % 2 === 1 && j % 2 === 0,
-              isGreenB: (i,j) => i % 2 === 0 && j % 2 === 1,
-              isBlue:   (i,j) => i % 2 === 0 && j % 2 === 0
-          };
-
-    }
-};
-
 let read = (i, o) => {
     switch (o.depth) {
         case 16:
@@ -87,25 +53,77 @@ let p = (i, j, o) => {
     return read(x * o.width + y, o);
 };
 
+let isRed = (i, j, bayer) => {
+    switch (bayer) {
+        case Bayer.RGGB:
+            return (i % 2 === 0 && j % 2 === 0);
+        case Bayer.GRBG:
+            return (i % 2 === 0 && j % 2 === 1);
+        case Bayer.GBRG:
+            return (i % 2 === 1 && j % 2 === 0);
+        case Bayer.BGGR:
+            return (i % 2 === 1 && j % 2 === 1);
+    }
+};
+
+let isGreenR = (i, j, bayer) => {
+    switch (bayer) {
+        case Bayer.RGGB:
+            return (i % 2 === 0 && j % 2 === 1);
+        case Bayer.GRBG:
+            return (i % 2 === 0 && j % 2 === 0);
+        case Bayer.GBRG:
+            return (i % 2 === 1 && j % 2 === 1);
+        case Bayer.BGGR:
+            return (i % 2 === 1 && j % 2 === 0);
+    }
+};
+
+let isGreenB = (i, j, bayer) => {
+    switch (bayer) {
+        case Bayer.RGGB:
+            return (i % 2 === 1 && j % 2 === 0);
+        case Bayer.GRBG:
+            return (i % 2 === 1 && j % 2 === 1);
+        case Bayer.GBRG:
+            return (i % 2 === 0 && j % 2 === 0);
+        case Bayer.BGGR:
+            return (i % 2 === 0 && j % 2 === 1);
+    }
+};
+
+let isBlue = (i, j, bayer) => {
+    switch (bayer) {
+        case Bayer.RGGB:
+            return (i % 2 === 1 && j % 2 === 1);
+        case Bayer.GRBG:
+            return (i % 2 === 1 && j % 2 === 0);
+        case Bayer.GBRG:
+            return (i % 2 === 0 && j % 2 === 1);
+        case Bayer.BGGR:
+            return (i % 2 === 0 && j % 2 === 0);
+    }
+};
+
 let red = (i, j, b, o) => {
-    if (b.isGreenR(i, j)) return Math.round((p(i, j - 1, o) + p(i, j + 1, o)) / 2);
-    if (b.isGreenB(i, j)) return Math.round((p(i - 1, j, o) + p(i + 1, j, o)) / 2);
-    if (b.isBlue(i, j))
+    if (isGreenR(i, j, b)) return Math.round((p(i, j - 1, o) + p(i, j + 1, o)) / 2);
+    if (isGreenB(i, j, b)) return Math.round((p(i - 1, j, o) + p(i + 1, j, o)) / 2);
+    if (isBlue(i, j, b))
         return Math.round((p(i - 1, j - 1, o) + p(i - 1, j + 1, o) + p(i + 1, j - 1, o) + p(i + 1, j + 1, o)) / 4);
     return p(i, j, o);
 };
 
 let green = (i, j, b, o) => {
-    if (b.isRed(i, j) || b.isBlue(i, j))
+    if (isRed(i, j, b) || isBlue(i, j))
         return Math.round((p(i, j - 1, o) + p(i, j + 1, o) + p(i - 1, j, o) + p(i + 1, j, o)) / 4);
     return p(i, j, o);
 };
 
 let blue = (i, j, b, o) => {
-    if (b.isRed(i, j))
+    if (isRed(i, j, b))
         return Math.round((p(i - 1, j - 1, o) + p(i - 1, j + 1, o) + p(i + 1, j - 1, o) + p(i + 1, j + 1, o)) / 4);
-    if (b.isGreenR(i, j)) return Math.round((p(i - 1, j, o) + p(i + 1, j, o)) / 2);
-    if (b.isGreenB(i, j)) return Math.round((p(i, j - 1, o) + p(i, j + 1, o)) / 2);
+    if (isGreenR(i, j, b)) return Math.round((p(i - 1, j, o) + p(i + 1, j, o)) / 2);
+    if (isGreenB(i, j, b)) return Math.round((p(i, j - 1, o) + p(i, j + 1, o)) / 2);
     return p(i, j, o);
 };
 
@@ -118,7 +136,7 @@ function bilinear(options) {
 
     let result = Buffer.alloc(h * w * 3 * (options.depth / 8));
 
-    let bayer = bayerMask(options.bayer);
+    let bayer = options.bayer;
 
     for (let i = 0; i < h; i++) {
         let l = i * w * 3;
