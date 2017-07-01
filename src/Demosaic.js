@@ -151,7 +151,6 @@ function bilinear(options) {
     return result;
 }
 
-
 module.exports = {
     Bayer: Bayer,
     bilinear: bilinear
