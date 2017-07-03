@@ -9,7 +9,7 @@ let mosaic = require('../util/mosaic');
 
     let suite = new Benchmark.Suite();
 
-    let image = sharp(`test/resources/leaf.jpg`);
+    let image = sharp(`test/resources/poppy.jpg.small`);
 
     image
         .metadata()
