@@ -11,30 +11,27 @@ let isGreenB = util.isGreenB;
 let isBlue = util.isBlue;
 
 let red = (i, j, b, o) => {
-    if (isGreenR(i, j, b)) return Math.round((p(i, j - 1, o) + p(i, j + 1, o)) / 2);
-    if (isGreenB(i, j, b)) return Math.round((p(i - 1, j, o) + p(i + 1, j, o)) / 2);
-    if (isBlue(i, j, b))
-        return Math.round((p(i - 1, j - 1, o) + p(i - 1, j + 1, o) + p(i + 1, j - 1, o) + p(i + 1, j + 1, o)) / 4);
+    if (isGreenR(i, j, b)) return p(i, j + 1, o);
+    if (isGreenB(i, j, b)) return p(i + 1, j, o);
+    if (isBlue(i, j, b)) return p(i + 1, j + 1, o);
     return p(i, j, o);
 };
 
 let green = (i, j, b, o) => {
-    if (isRed(i, j, b) || isBlue(i, j, b))
-        return Math.round((p(i, j - 1, o) + p(i, j + 1, o) + p(i - 1, j, o) + p(i + 1, j, o)) / 4);
+    if (isRed(i, j, b) || isBlue(i, j, b)) return p(i, j+1, o);
     return p(i, j, o);
 };
 
 let blue = (i, j, b, o) => {
-    if (isRed(i, j, b))
-        return Math.round((p(i - 1, j - 1, o) + p(i - 1, j + 1, o) + p(i + 1, j - 1, o) + p(i + 1, j + 1, o)) / 4);
-    if (isGreenR(i, j, b)) return Math.round((p(i - 1, j, o) + p(i + 1, j, o)) / 2);
-    if (isGreenB(i, j, b)) return Math.round((p(i, j - 1, o) + p(i, j + 1, o)) / 2);
+    if (isRed(i, j, b)) return p(i + 1, j + 1, o);
+    if (isGreenR(i, j, b)) return p(i + 1, j, o);
+    if (isGreenB(i, j, b)) return p(i, j + 1, o);
     return p(i, j, o);
 };
 
-function bilinear(options) {
+function nearestNeighbour(options) {
 
-    options = merge({depth: 8, endianness: 'big', bayer: Bayer.RGGB}, options);
+    options = merge({depth: 8, bayer: Bayer.RGGB}, options);
 
     let h = options.height;
     let w = options.width;
@@ -56,4 +53,4 @@ function bilinear(options) {
     return result;
 }
 
-module.exports = bilinear;
+module.exports = nearestNeighbour;

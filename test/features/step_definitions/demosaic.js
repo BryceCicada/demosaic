@@ -41,6 +41,11 @@ defineSupportCode(function (context) {
         this.demosaic = defaults({pixels: demosaicPixels}, this.raw);
     });
 
+    When(/^I demosaic the raw pixels with nearest neighbour demosaic$/, function () {
+        let demosaicPixels = Demosaic.nearestNeighbour({data: this.raw.pixels, width: this.raw.width, height: this.raw.height});
+        this.demosaic = defaults({pixels: demosaicPixels}, this.raw);
+    });
+
     When(/^I save the demosaiced pixels as (.*) as a test artifact$/, function (imageName) {
         return sharp(this.demosaic.pixels, {
             raw: {

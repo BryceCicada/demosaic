@@ -9,7 +9,7 @@ let mosaic = require('../util/mosaic');
 
     let suite = new Benchmark.Suite();
 
-    let image = sharp(`test/resources/poppy.jpg.small`);
+    let image = sharp(`test/resources/poppy.jpg`);
 
     image
         .metadata()
@@ -22,6 +22,9 @@ let mosaic = require('../util/mosaic');
             suite
                 .add('bilinear', () => {
                     Demosaic.bilinear({data: raw, width: metadata.width, height: metadata.height});
+                })
+                .add('nearestNeighbour', () => {
+                    Demosaic.nearestNeighbour({data: raw, width: metadata.width, height: metadata.height});
                 })
                 .on('complete', function () {
                     console.log(this.map(x => x.toString()).join('\n'));
