@@ -12,8 +12,8 @@ Mostly just experimentation with demosaic implementations for private purposes.
 This code is not intended to support proprietary raw image formats from camera manufacturers.
 
 ## Usage
-```Demosaic.nearestNeighbour(args)```
-```Demosaic.bilinear(args)```
+- ```Demosaic.nearestNeighbour(args)```
+- ```Demosaic.bilinear(args)```
 
 Where args is an object with the following elements:
   - __data__.  Buffer. Raw pixel data. Required.
