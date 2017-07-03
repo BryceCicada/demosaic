@@ -20,11 +20,11 @@ let mosaic = require('../util/mosaic');
         })
         .then(({raw, metadata}) => {
             suite
-                .add('bilinear', () => {
-                    Demosaic.bilinear({data: raw, width: metadata.width, height: metadata.height});
-                })
                 .add('nearestNeighbour', () => {
                     Demosaic.nearestNeighbour({data: raw, width: metadata.width, height: metadata.height});
+                })
+                .add('bilinear', () => {
+                    Demosaic.bilinear({data: raw, width: metadata.width, height: metadata.height});
                 })
                 .on('complete', function () {
                     console.log(this.map(x => x.toString()).join('\n'));

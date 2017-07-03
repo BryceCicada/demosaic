@@ -12,6 +12,7 @@ Mostly just experimentation with demosaic implementations for private purposes.
 This code is not intended to support proprietary raw image formats from camera manufacturers.
 
 ## Usage
+```Demosaic.nearestNeighbour(args)```
 ```Demosaic.bilinear(args)```
 
 Where args is an object with the following elements:
@@ -74,6 +75,18 @@ let rgb = Demosaic.bilinear({
     endianness: 'big'
     bayer: Demosaic.Bayer.RGGB
 });
+```
+
+## Benchmarks
+
+Comparisons between implementations can be seen with benchmarks:
+
+```npm run benchmark```
+
+For example:
+```
+nearestNeighbour x 438 ops/sec ±1.63% (80 runs sampled)
+bilinear x 286 ops/sec ±1.79% (76 runs sampled)
 ```
 
 ## To Do
