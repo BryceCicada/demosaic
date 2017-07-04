@@ -94,12 +94,10 @@ defineSupportCode(function (context) {
     function compareHistograms(h1, h2) {
         let h1_average = sum(h1)/h1.length;
         let h2_average = sum(h2)/h2.length;
-        let x = zip(h1,h2);
-        let numerator = sum(x.map(([h1_element,h2_element]) => (h1_element - h1_average)*(h2_element-h2_average)));
-        let denominator = Math.sqrt(
-            sum(h1.map(h1_element => (h1_element - h1_average)*(h1_element-h1_average)))*
-            sum(h2.map(h2_element => (h2_element - h2_average)*(h2_element-h2_average)))
-        );
+        let h1_centered = h1.map(h => h-h1_average);
+        let h2_centered = h2.map(h => h-h2_average);
+        let numerator = sum(zip(h1_centered, h2_centered).map(([x1,x2]) => x1*x2));
+        let denominator = Math.sqrt(sum(h1_centered.map(x => x*x))*sum(h2_centered.map(x => x*x)));
         return numerator / denominator;
     }
 

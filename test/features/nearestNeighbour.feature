@@ -3,7 +3,7 @@ Feature: Nearest neighbour demosaic
   I want the nearest neighbour demosaic to produce accurate colour images
   So that I can use it on my raw images.
 
-  Scenario Outline: Nearest neighbour demosaic has low mean-squared error between original and demosaiced pixels
+  Scenario Outline: Nearest neighbour  demosaic has low mean-squared error to ground-truth image
     Given RGB pixels from image <image>
     And I obtain raw pixels from RGB pixels by applying a Bayer CFA with RGGB alignment
     And I save the raw pixels as <raw> as a test artifact
@@ -19,7 +19,7 @@ Feature: Nearest neighbour demosaic
       | passiflora.jpg | passiflora.raw.jpg | passiflora.nearestNeighbour.jpg | 789                 |
       | poppy.jpg      | poppy.raw.jpg      | poppy.nearestNeighbour.jpg      | 933                 |
 
-  Scenario Outline: Nearest neighbour demosaic has low mean-squared error between colour histograms of original and demosaiced images
+  Scenario Outline: Nearest neighbour demosaic results in near-matching colour histograms to ground-truth image
     Given RGB pixels from image <image>
     And I obtain raw pixels from RGB pixels by applying a Bayer CFA with RGGB alignment
     When I demosaic the raw pixels with nearest neighbour demosaic
