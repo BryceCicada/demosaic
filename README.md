@@ -20,7 +20,7 @@ Where args is an object with the following elements:
   - __width__.  Number. Width of image. Required.
   - __height__.  Number. Height of image. Required.
   - __depth__.  Number.  Number of bits per pixel.  8 or 16.  Default 8.
-  - __endianness__.  String.  Endianness of pixel data when depth is 16. 'big' or 'little'.  Default 'big'.
+  - __endianness__.  String.  Endianness of pixel data for bilinear demosaic when depth is 16. 'big' or 'little'.  Default 'big'.  Unused for nearest neighbour.
   - __bayer__.  String.  Bayer CFA alignment. 'rggb', 'grbg', 'gbrg' or 'bggr'. Default 'rggb'.
 
 ### Bayer alignment
@@ -76,6 +76,12 @@ let rgb = Demosaic.bilinear({
     bayer: Demosaic.Bayer.RGGB
 });
 ```
+
+## Samples
+
+| Original | Nearest Neighbour | Bilinear | 
+|----------|-------------------|----------|
+| ![poppy](samples/poppy.jpg) | ![poppy nearest neighbour](samples/poppy.nearestNeighbour.jpg) | ![poppy](samples/poppy.bilinear.jpg) |
 
 ## Benchmarks
 
