@@ -22,11 +22,11 @@ Feature: Bilinear demosaic
     Given RGB pixels from image <image>
     And I obtain raw pixels from RGB pixels by applying a Bayer CFA with RGGB alignment
     When I demosaic the raw pixels with bilinear demosaic
-    Then the original and demosaiced colour histograms should have mean-squared-error under <maxMeanSquaredError>
+    Then the original and demosaiced colour histograms have correlation within <correlation>
 
     Examples:
-      | image          | maxMeanSquaredError |
-      | aster.jpg      | 782                 |
-      | orange.jpg     | 10166               |
-      | passiflora.jpg | 1413                |
-      | poppy.jpg      | 865                 |
+      | image          | correlation |
+      | aster.jpg      | 0.000000074 |
+      | orange.jpg     | 0.00009     |
+      | passiflora.jpg | 0.012       |
+      | poppy.jpg      | 0.0104      |

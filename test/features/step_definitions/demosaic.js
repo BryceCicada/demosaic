@@ -70,16 +70,29 @@ defineSupportCode(function (context) {
         meanSquaredError(rgb, demosaic).should.be.below(mseUpperBound);
     });
 
-    Then(/^the original and demosaiced colour histograms should have mean-squared-error under (\d+)$/, function (mseUpperBound) {
+    Then('the original and demosaiced colour histograms have correlation within {float}', function (maxCorrelation) {
         this.rgb.pixels.length.should.equal(this.rgb.width * this.rgb.height * 3);
         this.demosaic.pixels.length.should.equal(this.demosaic.width * this.demosaic.height * 3);
 
         let rgbHistograms = range(3).map(x => new RGBHistogram(this.rgb, x).toArray());
         let demosaicHistograms = range(3).map(x => new RGBHistogram(this.demosaic, x).toArray());
 
-        let mse = sum(zip(rgbHistograms, demosaicHistograms).map(([h1, h2]) => meanSquaredError(h1, h2)));
-        mse.should.be.below(mseUpperBound);
+        let histComparisons = zip(rgbHistograms, demosaicHistograms).map(([h1, h2]) => compareHistograms(h1, h2));
+        let histDistances = meanSquaredError(histComparisons, [1,1,1]);
+        histDistances.should.be.below(maxCorrelation);
     });
+
+    function compareHistograms(h1, h2) {
+        let h1_average = sum(h1)/h1.length;
+        let h2_average = sum(h2)/h2.length;
+        let x = zip(h1,h2);
+        let numerator = sum(x.map(([h1_element,h2_element]) => (h1_element - h1_average)*(h2_element-h2_average)));
+        let denominator = Math.sqrt(
+            sum(h1.map(h1_element => (h1_element - h1_average)*(h1_element-h1_average)))*
+            sum(h2.map(h2_element => (h2_element - h2_average)*(h2_element-h2_average)))
+        );
+        return numerator / denominator;
+    }
 
     function meanSquaredError(xs, ys) {
         let squareSum = sum(zipWith(xs, ys, (x, y) => (x - y) * (x - y)));

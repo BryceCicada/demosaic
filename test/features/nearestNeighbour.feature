@@ -22,11 +22,11 @@ Feature: Nearest neighbour demosaic
     Given RGB pixels from image <image>
     And I obtain raw pixels from RGB pixels by applying a Bayer CFA with RGGB alignment
     When I demosaic the raw pixels with nearest neighbour demosaic
-    Then the original and demosaiced colour histograms should have mean-squared-error under <maxMeanSquaredError>
+    Then the original and demosaiced colour histograms have correlation within <correlation>
 
     Examples:
-      | image          | maxMeanSquaredError |
-      | aster.jpg      | 47                  |
-      | orange.jpg     | 147                 |
-      | passiflora.jpg | 230                 |
-      | poppy.jpg      | 245                 |
+      | image          | correlation   |
+      | aster.jpg      | 0.00000000116 |
+      | orange.jpg     | 0.000000323   |
+      | passiflora.jpg | 0.0010075     |
+      | poppy.jpg      | 0.0000254     |
