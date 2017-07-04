@@ -81,7 +81,7 @@ let rgb = Demosaic.bilinear({
 
 | Original | Nearest Neighbour | Bilinear | 
 |----------|-------------------|----------|
-| ![poppy](samples/poppy.jpg) | ![poppy nearest neighbour](samples/poppy.nearestNeighbour.jpg) | ![poppy](samples/poppy.bilinear.jpg) |
+| [![poppy](samples/poppy.jpg)](samples/poppy) | [![poppy nearest neighbour](samples/poppy.nearestNeighbour.jpg)](samples/poppy.nearestNeighbour.jpg) | [![poppy](samples/poppy.bilinear.jpg)](samples/poppy.bilinear.jpg) |
 
 ## Benchmarks
 
