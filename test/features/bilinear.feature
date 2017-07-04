@@ -13,6 +13,7 @@ Feature: Bilinear demosaic
 
     Examples:
       | image          | raw                | bilinear                | maxMeanSquaredError |
+      | sample.png     | sample.raw.png     | sample.bilinear.png     | 0                   |
       | aster.jpg      | aster.raw.jpg      | aster.bilinear.jpg      | 88                  |
       | orange.jpg     | orange.raw.jpg     | orange.bilinear.jpg     | 156                 |
       | passiflora.jpg | passiflora.raw.jpg | passiflora.bilinear.jpg | 357                 |

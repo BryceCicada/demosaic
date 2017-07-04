@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
+    "canvas": "^1.6.5",
     "chai": "^4.0.2",
     "coveralls": "^2.13.1",
     "cucumber": "^2.3.1",

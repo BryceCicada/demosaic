@@ -8,6 +8,7 @@ let mosaic = require('../../util/mosaic');
 let Demosaic = require('../../../Demosaic');
 let chai = require('chai');
 let {defineSupportCode} = require('cucumber');
+let path = require('path');
 
 chai.should();
 
@@ -31,9 +32,13 @@ defineSupportCode(function (context) {
     });
 
     Given(/^I save the raw pixels as (.*) as a test artifact$/, function (imageName) {
-        return sharp(this.raw.pixels, {raw: {width: this.raw.width, height: this.raw.height, channels: 1}})
-            .jpeg()
-            .toFile(`test/artifacts/${imageName}`);
+        let img = sharp(this.raw.pixels, {raw: {width: this.raw.width, height: this.raw.height, channels: 1}});
+
+        if (path.extname(imageName) === '.png') {
+            return img.png().toFile(`test/artifacts/${imageName}`);
+        } else {
+            return img.jpeg().toFile(`test/artifacts/${imageName}`);
+        }
     });
 
     When(/^I demosaic the raw pixels with bilinear demosaic$/, function () {
@@ -47,15 +52,19 @@ defineSupportCode(function (context) {
     });
 
     When(/^I save the demosaiced pixels as (.*) as a test artifact$/, function (imageName) {
-        return sharp(this.demosaic.pixels, {
+        let img = sharp(this.demosaic.pixels, {
             raw: {
                 width: this.demosaic.width,
                 height: this.demosaic.height,
                 channels: 3
             }
-        })
-            .jpeg()
-            .toFile(`test/artifacts/${imageName}`);
+        });
+
+        if (path.extname(imageName) === '.png') {
+            return img.png().toFile(`test/artifacts/${imageName}`);
+        } else {
+            return img.jpeg().toFile(`test/artifacts/${imageName}`);
+        }
     });
 
     Then(/^the original and demosaiced pixels should have mean-squared-error under (\d+)$/, function (mseUpperBound) {

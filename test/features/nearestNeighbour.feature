@@ -13,6 +13,7 @@ Feature: Nearest neighbour demosaic
 
     Examples:
       | image          | raw                | bilinear                        | maxMeanSquaredError |
+      | sample.png     | sample.raw.png     | sample.nearestNeighbour.png     | 0                   |
       | aster.jpg      | aster.raw.jpg      | aster.nearestNeighbour.jpg      | 177                 |
       | orange.jpg     | orange.raw.jpg     | orange.nearestNeighbour.jpg     | 394                 |
       | passiflora.jpg | passiflora.raw.jpg | passiflora.nearestNeighbour.jpg | 789                 |
