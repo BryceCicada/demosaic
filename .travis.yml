@@ -4,6 +4,10 @@ node_js:
   - "7"
   - "6"
 dist: trusty
+addons:
+  apt:
+    packages:
+    - libgif-dev
 sudo: false
 script: npm run coverage
 after_success: 'npm run coveralls'
