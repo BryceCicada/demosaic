@@ -1,6 +1,6 @@
 {
   "name": "demosaic",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "Bayer demosaic of raw images.",
   "keywords": [
     "demosaic",
